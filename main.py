@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from telethon import TelegramClient, events
 from fastapi.responses import PlainTextResponse
 
+# Carrega variáveis do .env
 load_dotenv("config.env")
 
 API_ID = int(os.getenv("API_ID"))
@@ -12,11 +13,14 @@ API_HASH = os.getenv("API_HASH")
 SESSION_NAME = os.getenv("SESSION_NAME")
 GROUP_ID = int(os.getenv("GROUP_ID"))
 
+# Inicia cliente Telegram
 client = TelegramClient(SESSION_NAME, API_ID, API_HASH)
+
+# Inicia FastAPI
 app = FastAPI()
 response_holder = {}
 
-# Mapeamento dos comandos corretos
+# Mapeia os comandos válidos
 comandos = {
     "cpf": "cpf1",
     "cnpj": "cnpj",
@@ -26,25 +30,28 @@ comandos = {
     "telefone": "telefone"
 }
 
+# Ao iniciar a API, inicia o cliente Telegram
 @app.on_event("startup")
 async def start_bot():
     await client.start()
-    print("🚀 Userbot Telegram iniciado!")
+    print("✅ Telegram conectado!")
 
+    # Captura mensagens enviadas pelo bot de consulta no grupo
     @client.on(events.NewMessage(chats=GROUP_ID))
     async def handler(event):
         sender = await event.get_sender()
         if sender.bot:
             response_holder['last'] = event.text
-            print("📨 Resposta do bot capturada.")
+            print("📩 Resposta recebida do bot!")
 
     asyncio.create_task(client.run_until_disconnected())
 
+# Função para enviar comando e esperar resposta
 async def consultar(tipo: str, dado: str):
     comando = comandos.get(tipo)
     if not comando:
         return "❌ Tipo inválido."
-    
+
     mensagem = f"/{comando} {dado}"
     await client.send_message(GROUP_ID, mensagem)
 
@@ -52,8 +59,9 @@ async def consultar(tipo: str, dado: str):
         await asyncio.sleep(0.5)
         if 'last' in response_holder:
             return response_holder.pop('last')
-    return "❌ Sem resposta do bot."
+    return "⏱️ Tempo esgotado sem resposta."
 
+# Rota JSON
 @app.get("/{tipo}/{dado}")
 async def consulta(tipo: str, dado: str):
     if tipo not in comandos:
@@ -66,7 +74,11 @@ async def consulta(tipo: str, dado: str):
         "resposta": resposta
     }
 
+# Rota TXT (modo texto plano)
 @app.get("/txt/{tipo}/{dado}", response_class=PlainTextResponse)
 async def consulta_txt(tipo: str, dado: str):
+    if tipo not in comandos:
+        return "❌ Tipo inválido."
+
     resposta = await consultar(tipo, dado)
     return f"/{comandos.get(tipo)} {dado}\n\n{resposta}"
