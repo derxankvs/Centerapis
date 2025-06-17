@@ -1,0 +1,22 @@
+[
+  {
+    "Dado cpf": "11977182909",
+    "Horario da consulta": "2025-06-17 06:21:50",
+    "IP da consulta": "127.0.0.1"
+  },
+  {
+    "Dado cpf": "11977182909",
+    "Horario da consulta": "2025-06-17 06:21:52",
+    "IP da consulta": "127.0.0.1"
+  },
+  {
+    "Dado cpf": "12345678900",
+    "Horario da consulta": "2025-06-17 06:24:01",
+    "IP da consulta": "127.0.0.1"
+  },
+  {
+    "Dado cpf": "12345678900",
+    "Horario da consulta": "2025-06-17 06:24:28",
+    "IP da consulta": "127.0.0.1"
+  }
+]

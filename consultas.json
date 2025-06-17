@@ -1,0 +1,12 @@
+[
+  {
+    "Dado cpf": "123.456.789-00",
+    "Horario da consulta": "2025-06-17 15:22:10",
+    "IP da consulta": "189.45.123.12"
+  },
+  {
+    "Dado placa": "ABC1234",
+    "Horario da consulta": "2025-06-17 15:22:45",
+    "IP da consulta": "189.45.123.12"
+  }
+]
