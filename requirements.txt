@@ -1,4 +1,6 @@
-telethon 
+gunicorn
 fastapi
-uvicorn 
+uvicorn
 python-dotenv
+telethon
+pydantic
