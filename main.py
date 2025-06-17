@@ -170,5 +170,5 @@ async def verificar_resposta_v2(req_id: str):
 
 # 🎯 API principal
 main = FastAPI(title="Center Seven API")
-main.mount("/api/v1", appv1)
-main.mount("/api/v2", appv2)
+main.mount("/v1", appv1)
+main.mount("/v2", appv2)
